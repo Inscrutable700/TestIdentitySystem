@@ -7,6 +7,7 @@ namespace TestIdentitySystem.Controllers
 {
     public class HomeController : Controller
     {
+        [Authorize]
         public ActionResult Index()
         {
             BusinessContext businessContext = this.Request.GetOwinContext().Get<BusinessContext>();

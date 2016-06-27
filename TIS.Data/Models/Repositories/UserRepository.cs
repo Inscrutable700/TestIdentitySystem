@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using TIS.Data.Models;
 
 namespace TIS.Data.Repositories
@@ -22,9 +23,14 @@ namespace TIS.Data.Repositories
             this.dataContext.Users.Remove(entity);
         }
 
-        public override User Get(int id)
+        public override Task<User> GetAsync(int id)
         {
-            return this.dataContext.Users.SingleOrDefault(u => u.ID == id);
+            return this.dataContext.Users.SingleOrDefaultAsync(u => u.ID == id);
+        }
+
+        public Task<User> GetAsync(string email)
+        {
+            return this.dataContext.Users.FirstOrDefaultAsync(u => u.Email.Equals(email));
         }
 
         public override User[] List()

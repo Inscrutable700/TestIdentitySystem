@@ -19,9 +19,27 @@ namespace TestIdentitySystem.Models
 
         public string UserName { get; set; }
 
+        public string Email { get; set; }
+
+        public string PasswordHash { get; set; }
+
+        public bool IsLockout { get; set; }
+
+        public int FailedAccessCount { get; set; }
+
+        public bool EmailConfirmed { get; set; }
+
         public Task<ClaimsIdentity> GenerateUserIdentityAsync()
         {
             return null;
+        }
+
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(CustomUserManager manager)
+        {
+            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+            var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
+            // Add custom user claims here
+            return userIdentity;
         }
     }
 }

@@ -105,7 +105,7 @@ namespace TestIdentitySystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new CustomUser { UserName = model.Email };
+                var user = new CustomUser { UserName = model.Email, Email = model.Email };
                 var result = await CustomUserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

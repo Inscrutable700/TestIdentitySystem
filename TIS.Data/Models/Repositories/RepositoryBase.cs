@@ -1,4 +1,6 @@
-﻿namespace TIS.Data.Repositories
+﻿using System.Threading.Tasks;
+
+namespace TIS.Data.Repositories
 {
     public abstract class RepositoryBase<TEntity>
     {
@@ -13,6 +15,6 @@
         public abstract void Update(TEntity entity);
         public abstract void Delete(TEntity entity);
         public abstract TEntity[] List();
-        public abstract TEntity Get(int id);
+        public abstract Task<TEntity> GetAsync(int id);
     }
 }

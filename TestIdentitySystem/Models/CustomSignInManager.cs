@@ -8,41 +8,24 @@ using Microsoft.Owin.Security;
 
 namespace TestIdentitySystem.Models
 {
-    public class CustomSignInManager : IDisposable
+    public class CustomSignInManager : SignInManager<CustomUser, int>
     {
         private UserManager<CustomUser, int> userManager;
 
-        private IAuthenticationManager authenticationManager;
-
         public CustomSignInManager(UserManager<CustomUser, int> userManager, IAuthenticationManager authenticationManager)
+            : base(userManager, authenticationManager)
         {
             this.userManager = userManager;
-            this.authenticationManager = authenticationManager;
         }
-
-        public Task<SignInStatus> PasswordSignInAsync(string userName, string password, bool isPersistent, bool shouldLockout)
-        {
-            return Task.FromResult(SignInStatus.Success);
-        }
-
-        public async Task SignInAsync(CustomUser user, bool isPersistent, bool rememberBrowser)
-        {
-            await Task.Delay(0);
-        }
-        
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
-
-        //public override Task<ClaimsIdentity> CreateUserIdentityAsync(CustomUser user)
-        //{
-        //    return user.GenerateUserIdentityAsync((CustomUserManager)userManager);
-        //}
 
         public static CustomSignInManager Create(IdentityFactoryOptions<CustomSignInManager> options, IOwinContext context)
         {
             return new CustomSignInManager(context.GetUserManager<CustomUserManager>(), context.Authentication);
+        }
+
+        public override Task<ClaimsIdentity> CreateUserIdentityAsync(CustomUser user)
+        {
+            return user.GenerateUserIdentityAsync((CustomUserManager)userManager);
         }
     }
 }
